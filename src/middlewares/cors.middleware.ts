@@ -8,7 +8,10 @@ const { server } = config;
 
 const origin = (ctx: Context) => {
   const [defaulOrigin] = server.origins;
-  if (ctx.headers.origin && server.origins.includes(ctx.headers.origin)) {
+  if (
+    (ctx.headers.origin && server.origins.includes(ctx.headers.origin)) ||
+    server.origins.includes('all')
+  ) {
     return ctx.header.origin || defaulOrigin;
   }
   return defaulOrigin;

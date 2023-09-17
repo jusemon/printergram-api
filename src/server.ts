@@ -8,6 +8,9 @@ import tasksRoute from './routes/secrets.route';
 import errorMiddleware from './middlewares/error.middleware';
 import corsMiddleware from './middlewares/cors.middleware';
 
+import { createServer } from 'http';
+import { startServerLog } from './utils/server';
+
 const { server } = config;
 
 export const initializeServer = () => {
@@ -24,7 +27,9 @@ export const initializeServer = () => {
   router.use(tasksRoute.routes());
   app.use(router.routes()).use(router.allowedMethods());
 
-  app.listen(server.port, () => {
-    console.log(`Server started at port ${server.port}`);
-  });
+  createServer(app.callback()).listen(
+    server.port,
+    server.host,
+    startServerLog(server.port),
+  );
 };
